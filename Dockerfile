@@ -45,11 +45,12 @@ ENV WORDPRESS_VERSION=5.9.3
 ENV WORDPRESS_SHA1=cab576e112c45806c474b3cbe0d1263a2a879adf
 
 # Upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
-RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz \
-        && echo "$WORDPRESS_SHA1 *wordpress.tar.gz" | sha1sum -c - \
-        && tar -xzf wordpress.tar.gz -C /usr/src/ \
-        && rm wordpress.tar.gz \
-        && chown -R nobody.nobody /usr/src/wordpress
+RUN mkdir -p /usr/src \
+    && curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz \
+    && echo "$WORDPRESS_SHA1 *wordpress.tar.gz" | sha1sum -c - \
+    && tar -xzf wordpress.tar.gz -C /usr/src/ \
+    && rm wordpress.tar.gz \
+    && chown -R nobody.nobody /usr/src/wordpress
 
 # Add WP CLI
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
